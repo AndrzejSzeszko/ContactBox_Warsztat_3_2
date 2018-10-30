@@ -20,11 +20,12 @@ class Person(models.Model):
     name = models.CharField(max_length=64, null=False, blank=False)
     surname = models.CharField(max_length=64, null=True, blank=True)
     description = models.CharField(max_length=256, null=True, blank=True)
+    photo = models.ImageField(upload_to='img')
     address = models.ForeignKey('Address', null=True, blank=True, on_delete=models.SET_NULL)
-    groups = models.ManyToManyField('Group', null=True, blank=True, on_delete=models.SET_NULL)
+    groups = models.ManyToManyField('Group', null=True, blank=True)
 
     def __str__(self):
-        return f'{self.name}{" " + self.surname if self.surname else None}'
+        return f'{self.name}{" " + self.surname if self.surname else ""}'
 
 
 class Address(models.Model):
@@ -34,9 +35,9 @@ class Address(models.Model):
     apartment_no = models.CharField(max_length=8, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.town}{", " + self.street if self.street else None} ' \
-               f'{" " + self.house_no if self.house_no else None}' \
-               f'{"/" + self.apartment_no if self.apartment_no else None}'
+        return f'{self.town}{", " + self.street if self.street else ""} ' \
+               f'{" " + self.house_no if self.house_no else ""}' \
+               f'{"/" + self.apartment_no if self.apartment_no else ""}'
 
 
 class Phone(models.Model):
