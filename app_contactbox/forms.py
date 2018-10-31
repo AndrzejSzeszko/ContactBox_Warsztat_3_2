@@ -25,13 +25,13 @@ class AddressForm(forms.Form):
 
 class PhoneForm(forms.Form):
     number = forms.CharField(label='Number:', max_length=9)
-    phone_type = forms.ChoiceField(label='Phone type:', choices=Phone.PHONE_TYPES, empty_value=None, required=False)
+    phone_type = forms.ChoiceField(label='Phone type:', choices=Phone.PHONE_TYPES, required=False)
     person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all())
 
 
 class EmailForm(forms.Form):
     email = forms.CharField(label='Email:', max_length=64)
-    email_type = forms.ChoiceField(label='Email type:', choices=Email.EMAIL_TYPES, empty_value=None, required=False)
+    email_type = forms.ChoiceField(label='Email type:', choices=Email.EMAIL_TYPES, required=False)
     person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all())
 
 
