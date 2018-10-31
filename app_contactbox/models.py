@@ -7,7 +7,7 @@ class Person(models.Model):
     description = models.CharField(max_length=256, null=True, blank=True)
     # photo = models.ImageField(upload_to='photos')
     address = models.ForeignKey('Address', null=True, blank=True, on_delete=models.SET_NULL)
-    groups = models.ManyToManyField('Group', null=True, blank=True)
+    groups = models.ManyToManyField('Group', blank=True)
 
     def __str__(self):
         return f'{self.name}{" " + self.surname if self.surname else ""}'
