@@ -37,7 +37,7 @@ class Phone(models.Model):
         (4, 'other')
     )
 
-    number = models.IntegerField(max_length=9, unique=True)
+    number = models.CharField(max_length=9, unique=True)
     phone_type = models.IntegerField(choices=PHONE_TYPES, null=True, blank=True)
     person = models.ForeignKey('Person', on_delete=models.CASCADE)
 
