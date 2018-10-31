@@ -1,0 +1,9 @@
+{% extends 'app_contactbox/base.html' %}
+
+<h2>List of all contacts:</h2>
+
+{% for person in persons %}
+    <p>{{ person.pk }}) {{ person.name }}</p>
+{% empty %}
+    <p>No records to dispaly.</p>
+{% endfor %}
