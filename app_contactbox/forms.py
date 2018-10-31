@@ -36,4 +36,4 @@ class EmailForm(forms.Form):
 
 
 class GroupForm(forms.Form):
-    group_name = forms.ChoiceField(label='Name:', max_length=32)
+    group_name = forms.CharField(label='Name:', max_length=32)
