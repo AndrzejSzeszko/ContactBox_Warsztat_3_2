@@ -3,5 +3,5 @@ from django.urls import path
 from app_contactbox import views
 
 urlpatterns = [
-    path(),
+    path('/', views.HomeView.as_view(), name='home'),
 ]
