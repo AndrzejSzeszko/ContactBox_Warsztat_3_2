@@ -11,23 +11,23 @@ from .forms import (PersonForm,
                     PhoneForm,
                     EmailForm,
                     GroupForm)
+from django.db import IntegrityError
 
 
-class HomeView(View):
+class AllContactsView(View):
 
     def get(self, request):
         persons = Person.objects.all().order_by('surname', 'name')
-        return render(request, 'app_contactbox/home.html', {'persons': persons})
+        return render(request, 'app_contactbox/all-contacts.html', {'persons': persons})
 
 
 class NewPersonView(View):
 
     def get(self, request):
         person_form = PersonForm()
-        return render(request, 'app_contactbox/new_person.html', {'person_form': person_form})
+        return render(request, 'app_contactbox/new-person.html', {'person_form': person_form})
     
     def post(self, request):
-        
         data = {
             'name': request.POST.get('name'),
             'surname': request.POST.get('surname'),
@@ -36,5 +36,26 @@ class NewPersonView(View):
         }
 
         Person.objects.create(**data).groups.set(request.POST.get('groups') if request.POST.get('groups') else [])
-        
-        return redirect('new_person')
+
+        return redirect('new-person')
+
+
+class NewAddressView(View):
+
+    def get(self, request, info=''):
+        address_form = AddressForm()
+        context = {
+            'address_form': address_form,
+            'info': info
+        }
+        return render(request, 'app_contactbox/new-address.html', context)
+
+    def post(self, request):
+        address_data = AddressForm(request.POST)
+        if address_data.is_valid():
+            try:
+                Address.objects.create(**address_data.cleaned_data)
+                info = 'success'
+            except IntegrityError:
+                info = 'fail'
+            return redirect('new-address-info', info)
