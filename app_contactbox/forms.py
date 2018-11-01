@@ -13,7 +13,8 @@ class PersonForm(forms.Form):
     description = forms.CharField(label='Description:', max_length=256, empty_value=None, required=False)
     # photo = forms.ImageField(label='Upload photo:', upload_to='photos')
     address = forms.ModelChoiceField(label='Address:', queryset=Address.objects.all(), required=False)
-    groups = forms.ModelMultipleChoiceField(label='Groups:', queryset=Group.objects.all(), required=False)
+    groups = forms.ModelMultipleChoiceField(label='Groups:', queryset=Group.objects.all(),
+                                            widget=forms.CheckboxSelectMultiple, required=False)
 
 
 class AddressForm(forms.Form):
