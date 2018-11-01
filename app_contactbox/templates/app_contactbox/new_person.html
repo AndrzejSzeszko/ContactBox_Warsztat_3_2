@@ -1,0 +1,10 @@
+{% extends 'app_contactbox/base.html' %}
+
+{% block content %}
+    <h3>Adding new person:</h3>
+    <form action="#" method="post">
+        {% csrf_token %}
+        {{ person_form.as_p }}
+        <button name="submit" type="submit" value="submit">Add</button>
+    </form>
+{% endblock content %}
