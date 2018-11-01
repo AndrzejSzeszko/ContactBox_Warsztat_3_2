@@ -1,0 +1,21 @@
+{% extends 'app_contactbox/base.html' %}
+
+{% block content %}
+
+    <h3>Adding new address:</h3>
+
+    <form action="{% url 'new-address' %}" method="post">
+        {% csrf_token %}
+        {{ address_form.as_p }}
+        <button name="submit" type="submit" value="submit">Add</button>
+    </form>
+
+    <p>
+        {% if info == 'success'  %}
+            Address has been successfully added to database.
+        {% elif info == 'fail' %}
+            Address you were trying to add already exists in database.
+        {% endif %}
+    </p>
+
+{% endblock content %}
