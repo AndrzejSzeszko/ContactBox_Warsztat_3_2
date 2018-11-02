@@ -38,8 +38,8 @@ class Phone(models.Model):
     )
 
     number = models.CharField(max_length=9, unique=True)
-    phone_type = models.IntegerField(choices=PHONE_TYPES, null=True, blank=True)
-    person = models.ForeignKey('Person', on_delete=models.CASCADE)
+    phone_type = models.IntegerField(choices=PHONE_TYPES, default=1)
+    person = models.ForeignKey('Person', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.number
@@ -54,8 +54,8 @@ class Email(models.Model):
     )
 
     email = models.CharField(max_length=64, unique=True)
-    email_type = models.IntegerField(choices=EMAIL_TYPES, null=True, blank=True)
-    person = models.ForeignKey('Person', on_delete=models.CASCADE)
+    email_type = models.IntegerField(choices=EMAIL_TYPES, default=1)
+    person = models.ForeignKey('Person', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.email
