@@ -5,7 +5,13 @@
 <h2>List of all contacts:</h2>
 
 {% for person in persons %}
-    <p>{{ person.pk }}) {{ person.name }} {{ person.surname }}</p>
+    <p>
+        {{ person.pk }})
+        {{ person.name }}
+        {% if person.surname %}
+            {{ person.surname }}
+        {% endif %}
+    </p>
 {% empty %}
     <p>No records to dispaly.</p>
 {% endfor %}
