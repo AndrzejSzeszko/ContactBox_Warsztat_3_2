@@ -26,14 +26,14 @@ class AddressForm(forms.Form):
 
 class PhoneForm(forms.Form):
     number = forms.CharField(label='Number:', max_length=9)
-    phone_type = forms.ChoiceField(label='Phone type:', choices=Phone.PHONE_TYPES, required=False)
-    person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all())
+    phone_type = forms.ChoiceField(label='Phone type:', choices=Phone.PHONE_TYPES)
+    person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all(), required=False)
 
 
 class EmailForm(forms.Form):
     email = forms.CharField(label='Email:', max_length=64)
-    email_type = forms.ChoiceField(label='Email type:', choices=Email.EMAIL_TYPES, required=False)
-    person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all())
+    email_type = forms.ChoiceField(label='Email type:', choices=Email.EMAIL_TYPES)
+    person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all(), required=False)
 
 
 class GroupForm(forms.Form):
