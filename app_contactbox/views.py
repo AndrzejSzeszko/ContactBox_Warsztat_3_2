@@ -14,6 +14,29 @@ from .forms import (PersonForm,
 from django.db import IntegrityError
 
 
+def generic_get(request, name, form, info):
+    """generic get function for all class based views"""
+    context = {
+        'person_form': form(),
+        'info': info
+    }
+    return render(request, f'app_contactbox/new-{name}.html', context)
+
+
+def generic_post(request, name, form, model):
+    """generic post function for all class based views"""
+    current_form = form(request.POST)
+    if current_form.is_valid():
+        try:
+            model.objects.create(**current_form.cleaned_data)
+            info = 'Success'
+        except IntegrityError:
+            info = 'IntegrityError'
+    else:
+        info = 'InvalidInput'
+    return redirect(f'new-{name}-info', info)
+
+
 class AllContactsView(View):
 
     def get(self, request):
@@ -24,12 +47,7 @@ class AllContactsView(View):
 class NewPersonView(View):
 
     def get(self, request, info=''):
-        person_form = PersonForm()
-        context = {
-            'person_form': person_form,
-            'info': info
-        }
-        return render(request, 'app_contactbox/new-person.html', context)
+        return generic_get(request, 'person', PersonForm, info)
     
     def post(self, request):
         person_form = PersonForm(request.POST)
@@ -47,67 +65,34 @@ class NewPersonView(View):
 class NewAddressView(View):
 
     def get(self, request, info=''):
-        address_form = AddressForm()
-        context = {
-            'address_form': address_form,
-            'info': info
-        }
-        return render(request, 'app_contactbox/new-address.html', context)
+        return generic_get(request, 'address', AddressForm, info)
 
     def post(self, request):
-        address_form = AddressForm(request.POST)
-        if address_form.is_valid():
-            try:
-                Address.objects.create(**address_form.cleaned_data)
-                info = 'Success'
-            except IntegrityError:
-                info = 'IntegrityError'
-        else:
-            info = 'InvalidInput'
-        return redirect('new-address-info', info)
+        return generic_post(request, 'address', AddressForm, Address)
 
 
 class NewGroupView(View):
 
     def get(self, request, info=''):
-        group_form = GroupForm()
-        context = {
-            'group_form': group_form,
-            'info': info
-        }
-        return render(request, 'app_contactbox/new-group.html', context)
+        return generic_get(request, 'group', GroupForm, info)
 
     def post(self, request):
-        group_form = GroupForm(request.POST)
-        if group_form.is_valid():
-            try:
-                Group.objects.create(**group_form.cleaned_data)
-                info = 'Success'
-            except IntegrityError:
-                info = 'IntegrityError'
-        else:
-            info = 'InvalidInput'
-        return redirect('new-group-info', info)
+        return generic_post(request, 'group', GroupForm, Group)
 
 
 class NewPhoneView(View):
 
     def get(self, request, info=''):
-        phone_form = PhoneForm()
-        context = {
-            'phone_form': phone_form,
-            'info': info
-        }
-        return render(request, 'app_contactbox/new-phone.html', context)
+        return generic_get(request, 'phone', PhoneForm, info)
 
     def post(self, request):
-        phone_form = PhoneForm(request.POST)
-        if phone_form.is_valid():
-            try:
-                Phone.objects.create(**phone_form.cleaned_data)
-                info = 'Success'
-            except IntegrityError:
-                info = 'IntegrityError'
-        else:
-            info = 'InvalidInput'
-        return redirect('new-phone-info', info)
+        return generic_post(request, 'phone', PhoneForm, Phone)
+
+
+class NewEmailView(View):
+
+    def get(self, request, info=''):
+        return generic_get(request, 'email', EmailForm, info)
+
+    def post(self, request):
+        return generic_post(request, 'email', EmailForm, Email) #todo add email validation
