@@ -23,9 +23,13 @@ class AllContactsView(View):
 
 class NewPersonView(View):
 
-    def get(self, request):
+    def get(self, request, info=''):
         person_form = PersonForm()
-        return render(request, 'app_contactbox/new-person.html', {'person_form': person_form})
+        context = {
+            'person_form': person_form,
+            'info': info
+        }
+        return render(request, 'app_contactbox/new-person.html', context)
     
     def post(self, request):
         person_form = PersonForm(request.POST)
@@ -34,7 +38,8 @@ class NewPersonView(View):
             groups = data.pop('groups')
             new_person = Person.objects.create(**data)
             new_person.groups.set(groups)
-        return redirect('new-person')
+            info = 'success'
+            return redirect('new-person-info', info)
 
 
 class NewAddressView(View):
@@ -48,10 +53,10 @@ class NewAddressView(View):
         return render(request, 'app_contactbox/new-address.html', context)
 
     def post(self, request):
-        address_data = AddressForm(request.POST)
-        if address_data.is_valid():
+        address_form = AddressForm(request.POST)
+        if address_form.is_valid():
             try:
-                Address.objects.create(**address_data.cleaned_data)
+                Address.objects.create(**address_form.cleaned_data)
                 info = 'success'
             except IntegrityError:
                 info = 'fail'
