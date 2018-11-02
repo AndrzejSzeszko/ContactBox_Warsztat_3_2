@@ -28,15 +28,12 @@ class NewPersonView(View):
         return render(request, 'app_contactbox/new-person.html', {'person_form': person_form})
     
     def post(self, request):
-        data = {
-            'name': request.POST.get('name'),
-            'surname': request.POST.get('surname'),
-            'description': request.POST.get('description'),
-            'address': Address.objects.filter(id=request.POST.get('address') if request.POST.get('address') else None).first(),
-        }
-
-        Person.objects.create(**data).groups.set(request.POST.get('groups') if request.POST.get('groups') else [])
-
+        person_form = PersonForm(request.POST)
+        if person_form.is_valid():
+            data = person_form.cleaned_data
+            groups = data.pop('groups')
+            new_person = Person.objects.create(**data)
+            new_person.groups.set(groups)
         return redirect('new-person')
 
 
