@@ -11,8 +11,10 @@
     </form>
 
     <p>
-    {% if info == 'success' %}
+    {% if info == 'Success' %}
         Person has been successfully added to database.
+    {% elif info == 'InvalidInput' %}
+        None of the inputs can be whitespaces.
     {% endif %}
     </p>
 
