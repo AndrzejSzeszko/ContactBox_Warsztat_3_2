@@ -11,10 +11,12 @@
     </form>
 
     <p>
-        {% if info == 'success'  %}
+        {% if info == 'Success'  %}
             Address has been successfully added to database.
-        {% elif info == 'fail' %}
+        {% elif info == 'IntegrityError' %}
             Address you were trying to add already exists in database.
+        {% elif info == 'InvalidInput' %}
+            None of the inputs can be whitespaces.
         {% endif %}
     </p>
 
