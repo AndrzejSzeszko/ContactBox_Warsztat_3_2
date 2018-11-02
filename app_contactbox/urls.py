@@ -12,4 +12,6 @@ urlpatterns = [
     path('new-group/<str:info>', views.NewGroupView.as_view(), name='new-group-info'),
     path('new-phone/', views.NewPhoneView.as_view(), name='new-phone'),
     path('new-phone/<str:info>', views.NewPhoneView.as_view(), name='new-phone-info'),
+    path('new-email/', views.NewEmailView.as_view(), name='new-email'),
+    path('new-email/<str:info>', views.NewEmailView.as_view(), name='new-email-info'),
 ]
