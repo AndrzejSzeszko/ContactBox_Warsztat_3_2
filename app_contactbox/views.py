@@ -38,8 +38,10 @@ class NewPersonView(View):
             groups = data.pop('groups')
             new_person = Person.objects.create(**data)
             new_person.groups.set(groups)
-            info = 'success'
-            return redirect('new-person-info', info)
+            info = 'Success'
+        else:
+            info = 'InvalidInput'
+        return redirect('new-person-info', info)
 
 
 class NewAddressView(View):
@@ -57,7 +59,55 @@ class NewAddressView(View):
         if address_form.is_valid():
             try:
                 Address.objects.create(**address_form.cleaned_data)
-                info = 'success'
+                info = 'Success'
             except IntegrityError:
-                info = 'fail'
-            return redirect('new-address-info', info)
+                info = 'IntegrityError'
+        else:
+            info = 'InvalidInput'
+        return redirect('new-address-info', info)
+
+
+class NewGroupView(View):
+
+    def get(self, request, info=''):
+        group_form = GroupForm()
+        context = {
+            'group_form': group_form,
+            'info': info
+        }
+        return render(request, 'app_contactbox/new-group.html', context)
+
+    def post(self, request):
+        group_form = GroupForm(request.POST)
+        if group_form.is_valid():
+            try:
+                Group.objects.create(**group_form.cleaned_data)
+                info = 'Success'
+            except IntegrityError:
+                info = 'IntegrityError'
+        else:
+            info = 'InvalidInput'
+        return redirect('new-group-info', info)
+
+
+class NewPhoneView(View):
+
+    def get(self, request, info=''):
+        phone_form = PhoneForm()
+        context = {
+            'phone_form': phone_form,
+            'info': info
+        }
+        return render(request, 'app_contactbox/new-phone.html', context)
+
+    def post(self, request):
+        phone_form = PhoneForm(request.POST)
+        if phone_form.is_valid():
+            try:
+                Phone.objects.create(**phone_form.cleaned_data)
+                info = 'Success'
+            except IntegrityError:
+                info = 'IntegrityError'
+        else:
+            info = 'InvalidInput'
+        return redirect('new-phone-info', info)
