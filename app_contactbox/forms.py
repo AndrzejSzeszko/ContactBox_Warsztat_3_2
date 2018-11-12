@@ -35,5 +35,7 @@ class EmailForm(forms.ModelForm):
         fields = '__all__'
 
 
-class GroupForm(forms.Form):
-    group_name = forms.CharField(label='Name:', max_length=32)
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = '__all__'

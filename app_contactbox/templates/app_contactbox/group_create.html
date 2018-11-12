@@ -1,0 +1,21 @@
+{% extends 'app_contactbox/base.html' %}
+
+{% block content %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h3>Adding new group:</h3>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit" type="submit" value="submit">Create</button>
+    </form>
+
+{% endblock content %}

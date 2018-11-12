@@ -88,13 +88,19 @@ class CreateAddressView(CreateView):
         return super().form_invalid(form)
 
 
-class NewGroupView(View):
+class CreateGroupView(CreateView):
+    form_class = GroupForm
+    model = Group
+    template_name_suffix = '_create'
+    success_url = reverse_lazy('create-group')
 
-    def get(self, request, info=''):
-        return generic_get(request, 'group', GroupForm, info)
+    def form_valid(self, form):
+        messages.success(self.request, f'Group {form.cleaned_data.get("group_name")} successfully created.')
+        return super().form_valid(form)
 
-    def post(self, request):
-        return generic_post(request, 'group', GroupForm, Group)
+    def form_invalid(self, form):
+        messages.error(self.request, f'Group creation failed.')
+        return super().form_invalid(form)
 
 
 class CreatePhoneView(CreateView):
