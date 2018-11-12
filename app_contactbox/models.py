@@ -1,6 +1,7 @@
 from django.db import models
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import validate_email
 
 
 class Person(models.Model):
@@ -61,7 +62,7 @@ class Email(models.Model):
         (3, 'other'),
     )
 
-    email = models.CharField(max_length=64, unique=True, validators=[])
+    email = models.CharField(max_length=64, unique=True, validators=[validate_email])
     email_type = models.IntegerField(choices=EMAIL_TYPES, default=1)
     person = models.ForeignKey('Person', null=True, blank=True, on_delete=models.CASCADE)
 

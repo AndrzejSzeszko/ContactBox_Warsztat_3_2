@@ -17,7 +17,7 @@ from .forms import (PersonForm,
                     GroupForm)
 from django.db import IntegrityError
 from django.urls import reverse_lazy
-from django .contrib import messages
+from django.contrib import messages
 
 
 def generic_get(request, name, form, info):
@@ -97,22 +97,34 @@ class NewGroupView(View):
         return generic_post(request, 'group', GroupForm, Group)
 
 
-class NewPhoneView(View):
+class CreatePhoneView(CreateView):
+    form_class = PhoneForm
+    model = Phone
+    template_name_suffix = '_create'
+    success_url = reverse_lazy('create-phone')
 
-    def get(self, request, info=''):
-        return generic_get(request, 'phone', PhoneForm, info)
+    def form_valid(self, form):
+        messages.success(self.request, f'Phone {form.cleaned_data.get("number")} successfully created.')
+        return super().form_valid(form)
 
-    def post(self, request):
-        return generic_post(request, 'phone', PhoneForm, Phone)
+    def form_invalid(self, form):
+        messages.error(self.request, f'Phone creation failed.')
+        return super().form_invalid(form)
 
 
-class NewEmailView(View):
+class CreateEmailView(CreateView):
+    form_class = EmailForm
+    model = Email
+    template_name_suffix = '_create'
+    success_url = reverse_lazy('create-email')
 
-    def get(self, request, info=''):
-        return generic_get(request, 'email', EmailForm, info)
+    def form_valid(self, form):
+        messages.success(self.request, f'Email {form.cleaned_data.get("email")} successfully created.')
+        return super().form_valid(form)
 
-    def post(self, request):
-        return generic_post(request, 'email', EmailForm, Email) #todo add email validation
+    def form_invalid(self, form):
+        messages.error(self.request, f'Email creation failed.')
+        return super().form_invalid(form)
 
 
 class PersonDetailsView(DetailView):

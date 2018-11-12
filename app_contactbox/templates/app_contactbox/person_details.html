@@ -14,7 +14,7 @@
 
 <h2>Person {{ object }} details:</h2>
 
-    <a href="{% url 'edit-person' person.pk %}">edit person</a>
+    <a href="{% url 'update-person' person.pk %}">edit person</a>
     <a href="{% url 'delete-person' person.pk %}">delete person</a>
 
     <p>Name: {{ object.name }}</p>

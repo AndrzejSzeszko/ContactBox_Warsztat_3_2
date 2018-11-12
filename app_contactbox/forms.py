@@ -23,16 +23,16 @@ class AddressForm(forms.ModelForm):
         fields = '__all__'
 
 
-class PhoneForm(forms.Form):
-    number = forms.CharField(label='Number:', max_length=9)
-    phone_type = forms.ChoiceField(label='Phone type:', choices=Phone.PHONE_TYPES)
-    person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all(), required=False)
+class PhoneForm(forms.ModelForm):
+    class Meta:
+        model = Phone
+        fields = '__all__'
 
 
-class EmailForm(forms.Form):
-    email = forms.CharField(label='Email:', max_length=64)
-    email_type = forms.ChoiceField(label='Email type:', choices=Email.EMAIL_TYPES)
-    person = forms.ModelChoiceField(label='Person:', queryset=Person.objects.all(), required=False)
+class EmailForm(forms.ModelForm):
+    class Meta:
+        model = Email
+        fields = '__all__'
 
 
 class GroupForm(forms.Form):
