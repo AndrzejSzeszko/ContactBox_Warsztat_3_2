@@ -50,22 +50,24 @@ class AllContactsView(View):
         return render(request, 'app_contactbox/all_contacts.html', {'persons': persons})
 
 
-class NewPersonView(View):
+class CreatePersonView(CreateView):
+    model = Person
+    form_class = PersonForm
+    template_name_suffix = '_create'
 
-    def get(self, request, info=''):
-        return generic_get(request, 'person', PersonForm, info)
-    
-    def post(self, request):
-        person_form = PersonForm(request.POST)
-        if person_form.is_valid():
-            data = person_form.cleaned_data
-            groups = data.pop('groups')
-            new_person = Person.objects.create(**data)
-            new_person.groups.set(groups)
-            info = 'Success'
-        else:
-            info = 'InvalidInput'
-        return redirect('new-person-info', info)
+    def get_success_url(self):
+        return reverse_lazy('person-details', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        name = data.get('name')
+        surname = data.get('surname')
+        messages.success(self.request, f'Person {name} {surname} successfully created.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, f'Person creation failed.')
+        return super().form_invalid(form)
 
 
 class CreateAddressView(CreateView):
@@ -91,8 +93,8 @@ class CreateAddressView(CreateView):
 class CreateGroupView(CreateView):
     form_class = GroupForm
     model = Group
-    template_name_suffix = '_create'
     success_url = reverse_lazy('create-group')
+    template_name_suffix = '_create'
 
     def form_valid(self, form):
         messages.success(self.request, f'Group {form.cleaned_data.get("group_name")} successfully created.')
@@ -106,8 +108,8 @@ class CreateGroupView(CreateView):
 class CreatePhoneView(CreateView):
     form_class = PhoneForm
     model = Phone
-    template_name_suffix = '_create'
     success_url = reverse_lazy('create-phone')
+    template_name_suffix = '_create'
 
     def form_valid(self, form):
         messages.success(self.request, f'Phone {form.cleaned_data.get("number")} successfully created.')
@@ -121,8 +123,8 @@ class CreatePhoneView(CreateView):
 class CreateEmailView(CreateView):
     form_class = EmailForm
     model = Email
-    template_name_suffix = '_create'
     success_url = reverse_lazy('create-email')
+    template_name_suffix = '_create'
 
     def form_valid(self, form):
         messages.success(self.request, f'Email {form.cleaned_data.get("email")} successfully created.')
