@@ -1,4 +1,6 @@
 from django.db import models
+from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Person(models.Model):
@@ -24,12 +26,19 @@ class Address(models.Model):
                f'{" " + self.house_no if self.house_no else ""}' \
                f'{"/" + self.apartment_no if self.apartment_no else ""}'
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        try:
+            Address.objects.get(town=self.town, street=self.street, house_no=self.house_no, apartment_no=self.apartment_no)
+        except ObjectDoesNotExist:
+            return super().save()
+        raise IntegrityError('Given address already exists in database.')
+
     class Meta:
         unique_together = (('town', 'street', 'house_no', 'apartment_no'),)
 
 
 class Phone(models.Model):
-
     PHONE_TYPES = (
         (1, 'mobile'),
         (2, 'home'),
@@ -46,14 +55,13 @@ class Phone(models.Model):
 
 
 class Email(models.Model):
-
     EMAIL_TYPES = (
         (1, 'private'),
         (2, 'work'),
         (3, 'other'),
     )
 
-    email = models.CharField(max_length=64, unique=True)
+    email = models.CharField(max_length=64, unique=True, validators=[])
     email_type = models.IntegerField(choices=EMAIL_TYPES, default=1)
     person = models.ForeignKey('Person', null=True, blank=True, on_delete=models.CASCADE)
 

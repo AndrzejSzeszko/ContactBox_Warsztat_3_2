@@ -6,7 +6,7 @@
 
     <form action="{% url 'new-email' %}" method="POST">
         {% csrf_token %}
-        {{ phone_form.as_p }}
+        {{ email_form.as_p }}
         <button name="submit" type="submit" value="submit">Add</button>
     </form>
 

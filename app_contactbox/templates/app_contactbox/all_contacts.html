@@ -1,0 +1,36 @@
+{% extends 'app_contactbox/base.html' %}
+
+{% block content %}
+
+<h2>List of all contacts:</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% for person in persons %}
+
+    <p>
+        <a href="{% url 'person-details' person.pk %}">
+            {{ person.pk }})
+            {{ person.name }}
+            {% if person.surname %}
+                {{ person.surname }}
+            {% endif %}
+        </a>
+        <a href="{% url 'edit-person' person.pk %}">edit</a>
+        <a href="{% url 'delete-person' person.pk %}">delete</a>
+    </p>
+
+{% empty %}
+
+    <p>No records to display.</p>
+
+{% endfor %}
+
+{% endblock content %}

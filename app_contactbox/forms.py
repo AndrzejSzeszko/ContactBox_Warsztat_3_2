@@ -7,22 +7,21 @@ from .models import (Person,
                      Email)
 
 
-class PersonForm(forms.Form):
-    name = forms.CharField(label='Name:', max_length=64)
-    surname = forms.CharField(label='Surname:', max_length=64, empty_value=None, required=False)
-    description = forms.CharField(label='Description:', max_length=256, empty_value=None, required=False)
-    # photo = forms.ImageField(label='Upload photo:', upload_to='photos')
-    address = forms.ModelChoiceField(label='Address:', queryset=Address.objects.all(), required=False)
-    groups = forms.ModelMultipleChoiceField(label='Groups:', queryset=Group.objects.all(),
-                                            widget=forms.CheckboxSelectMultiple, required=False)
+class PersonForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = '__all__'
+        widgets = {
+            'groups': forms.CheckboxSelectMultiple,
+            'description': forms.Textarea
+        }
 
 
-class AddressForm(forms.Form):
-    town = forms.CharField(label='Town:', max_length=64)
-    street = forms.CharField(label='Street:', max_length=64, empty_value=None, required=False)
-    house_no = forms.CharField(label='House No:', max_length=8, empty_value=None, required=False)
-    apartment_no = forms.CharField(label='Apartment No:', max_length=8, empty_value=None, required=False)
-    
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
 
 class PhoneForm(forms.Form):
     number = forms.CharField(label='Number:', max_length=9)

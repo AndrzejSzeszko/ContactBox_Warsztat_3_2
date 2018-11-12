@@ -1,0 +1,43 @@
+{% extends 'app_contactbox/base.html' %}
+{% load app_contactbox.extras %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+<h2>Person {{ object }} details:</h2>
+
+    <a href="{% url 'edit-person' person.pk %}">edit person</a>
+    <a href="{% url 'delete-person' person.pk %}">delete person</a>
+
+    <p>Name: {{ object.name }}</p>
+    <p>Surname: {{ object.surname }}</p>
+    <p>Description: {{ object.description }}</p>
+    <p>Address: {{ object.address }}</p>
+    <p>
+        Groups:<br>
+        {% for group in object.groups|filter_all %}
+            {{ group }}<br>
+        {% endfor %}
+    </p>
+    <p>
+        Emails:<br>
+        {% for email in object.email_set|filter_all %}
+            {{ email }}<br>
+        {% endfor %}
+    </p>
+    <p>
+        Phones:<br>
+        {% for phone in object.phone_set|filter_all %}
+            {{ phone }}<br>
+        {% endfor %}
+    </p>
+
+{% endblock content %}
