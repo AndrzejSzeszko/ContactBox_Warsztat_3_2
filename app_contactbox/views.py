@@ -5,6 +5,7 @@ from django.views.generic import (DetailView,
                                   UpdateView,
                                   DeleteView,
                                   CreateView)
+from django.views.generic.edit import FormView
 from .models import (Person,
                      Address,
                      Group,
@@ -15,59 +16,47 @@ from .forms import (PersonForm,
                     PhoneForm,
                     EmailForm,
                     GroupForm)
-from django.db import IntegrityError
 from django.urls import reverse_lazy
 from django.contrib import messages
 
 
-def generic_get(request, name, form, info):
-    """generic get function for all class based views"""
-    context = {
-        f'{name}_form': form(),
-        'info': info
-    }
-    return render(request, f'app_contactbox/new_{name}.html', context)
-
-
-def generic_post(request, name, form, model):
-    """generic post function for all class based views"""
-    current_form = form(request.POST)
-    if current_form.is_valid():
-        try:
-            model.objects.create(**current_form.cleaned_data)
-            info = 'Success'
-        except IntegrityError:
-            info = 'IntegrityError'
-    else:
-        info = 'InvalidInput'
-    return redirect(f'new-{name}-info', info)
-
-
 class AllContactsView(View):
-
     def get(self, request):
         persons = Person.objects.all().order_by('surname', 'name')
         return render(request, 'app_contactbox/all_contacts.html', {'persons': persons})
 
 
-class CreatePersonView(CreateView):
-    model = Person
-    form_class = PersonForm
-    template_name_suffix = '_create'
+class CreateContactView(View):
+    def get(self, request):
+        ctx = {
+            'person_form': PersonForm(),
+            'phone_form': PhoneForm()
+        }
+        return render(request, 'app_contactbox/contact_create.html', ctx)
 
-    def get_success_url(self):
-        return reverse_lazy('person-details', kwargs={'pk': self.object.pk})
-
-    def form_valid(self, form):
-        data = form.cleaned_data
-        name = data.get('name')
-        surname = data.get('surname')
-        messages.success(self.request, f'Person {name} {surname} successfully created.')
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, f'Person creation failed.')
-        return super().form_invalid(form)
+    # def post(self, request):
+    #     person_form = PersonForm(request.POST)
+    #     phone_form = PhoneForm(request.POST)
+    #     if person_form.is_valid() and phone_form.is_valid():
+    #         person_data = person_form.cleaned_data
+    #         phone_data = phone_form.cleaned_data
+    #
+    #
+    #
+    # def get_success_url(self):
+    #     return reverse_lazy('person-details', kwargs={'pk': self.object.pk})
+    #
+    # def form_valid(self, form):
+    #     data = form.cleaned_data
+    #     name = data.get('name')
+    #     surname = data.get('surname')
+    #     messages.success(self.request, f'Person {name} {surname} successfully created.')
+    #
+    #     return super().form_valid(form)
+    #
+    # def form_invalid(self, form):
+    #     messages.error(self.request, f'Person creation failed.')
+    #     return super().form_invalid(form)
 
 
 class CreateAddressView(CreateView):
@@ -75,6 +64,7 @@ class CreateAddressView(CreateView):
     form_class = AddressForm
     success_url = reverse_lazy('create-address')
     template_name_suffix = '_create'
+
 
     def form_valid(self, form):
         data = form.cleaned_data

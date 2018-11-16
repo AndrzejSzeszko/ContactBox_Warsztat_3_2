@@ -36,7 +36,7 @@ class Address(models.Model):
         raise IntegrityError('Given address already exists in database.')
 
     class Meta:
-        unique_together = (('town', 'street', 'house_no', 'apartment_no'),)
+        unique_together = (('town', 'street', 'house_no', 'apartment_no'),)  # actually not needed because of save overwriting
 
 
 class Phone(models.Model):

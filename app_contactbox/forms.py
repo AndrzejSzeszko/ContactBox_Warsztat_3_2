@@ -13,7 +13,7 @@ class PersonForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'groups': forms.CheckboxSelectMultiple,
-            'description': forms.Textarea
+            'description': forms.Textarea,
         }
 
 

@@ -4,7 +4,7 @@ from app_contactbox import views
 
 urlpatterns = [
     path('', views.AllContactsView.as_view(), name='all-contacts'),
-    path('create_person/', views.CreatePersonView.as_view(), name='create-person'),
+    path('create_contact/', views.CreateContactView.as_view(), name='create-contact'),
     path('create_address/', views.CreateAddressView.as_view(), name='create-address'),
     path('create_group/', views.CreateGroupView.as_view(), name='create-group'),
     path('create_phone/', views.CreatePhoneView.as_view(), name='create-phone'),
