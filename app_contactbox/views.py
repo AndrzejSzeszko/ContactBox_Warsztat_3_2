@@ -34,15 +34,21 @@ class CreateContactView(View):
         }
         return render(request, 'app_contactbox/contact_create.html', ctx)
 
-    # def post(self, request):
-    #     person_form = PersonForm(request.POST)
-    #     phone_form = PhoneForm(request.POST)
-    #     if person_form.is_valid() and phone_form.is_valid():
-    #         person_data = person_form.cleaned_data
-    #         phone_data = phone_form.cleaned_data
-    #
-    #
-    #
+    def post(self, request):
+        person_form = PersonForm(request.POST)
+        phone_form = PhoneForm(request.POST)
+        if person_form.is_valid() and phone_form.is_valid():
+            current_person = person_form.save()
+            phone_form.cleaned_data['person'] = current_person
+            Phone.objects.create(**phone_form.cleaned_data)
+
+            messages.success(request, f'Contact for {current_person} successfully created')
+            return redirect('person-details', current_person.pk)
+        else:
+            messages.error(request, 'Person creation failed.')
+            return redirect('create-contact')
+
+
     # def get_success_url(self):
     #     return reverse_lazy('person-details', kwargs={'pk': self.object.pk})
     #

@@ -26,7 +26,7 @@ class AddressForm(forms.ModelForm):
 class PhoneForm(forms.ModelForm):
     class Meta:
         model = Phone
-        fields = '__all__'
+        exclude = ['person']
 
 
 class EmailForm(forms.ModelForm):
