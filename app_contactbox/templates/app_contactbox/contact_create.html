@@ -13,18 +13,39 @@
     <h3>Adding new contact:</h3>
 
     <form action="" method="post">
+
         {% csrf_token %}
         {{ person_form.as_p }}
-        Phone:
-        <div class="fieldWrapper">
-            {{ form.number.errors }}
-            {{ phone_form.number.label_tag }} {{ phone_form.number }}
+
+        Phones:
+        <div class="phone-form">
+            <div class="fieldWrapper">
+                {{ phone_form.number.errors }}
+                {{ phone_form.number.label_tag }} {{ phone_form.number }}
+            </div>
+            <div class="fieldWrapper">
+                {{ phone_form.phone_type.errors }}
+                {{ phone_form.phone_type.label_tag }} {{ phone_form.phone_type }}
+            </div>
+            <button class="remove-button" type="button">Remove phone</button>
         </div>
-        <div class="fieldWrapper">
-            {{ form.phone_type.errors }}
-            {{ phone_form.phone_type.label_tag }} {{ phone_form.phone_type }}
+        <button id="add-phone-button" type="button">Add next phone</button><br>
+
+        Emails:
+        <div class="email-form">
+            <div class="fieldWrapper">
+                {{ email_form.email.errors }}
+                {{ email_form.email.label_tag }} {{ email_form.email }}
+            </div>
+            <div class="fieldWrapper">
+                {{ email_form.email_type.errors }}
+                {{ email_form.email_type.label_tag }} {{ email_form.email_type }}
+            </div>
+            <button class="remove-button" type="button">Remove email</button>
         </div>
-        <button name="submit" type="submit" value="submit">Add</button>
+        <button id="add-email-button" type="button">Add next email</button><br>
+
+        <button type="submit">Add contact</button>
     </form>
 
 {% endblock content %}
