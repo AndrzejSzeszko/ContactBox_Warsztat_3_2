@@ -30,17 +30,26 @@ class CreateContactView(View):
     def get(self, request):
         ctx = {
             'person_form': PersonForm(),
-            'phone_form': PhoneForm()
+            'phone_form': PhoneForm(),
+            'email_form': EmailForm()
         }
         return render(request, 'app_contactbox/contact_create.html', ctx)
 
     def post(self, request):
         person_form = PersonForm(request.POST)
-        phone_form = PhoneForm(request.POST)
-        if person_form.is_valid() and phone_form.is_valid():
+
+        phone_forms = {}
+        for index, number in enumerate(request.POST.getlist('number')):
+            phone_forms[f'phone_form_{index}'] = PhoneForm({
+                'number': number,
+                'phone_type': request.POST.getlist('phone_type')[index]
+            })
+
+        if person_form.is_valid() and all([form.is_valid() for form in phone_forms.values()]):
             current_person = person_form.save()
-            phone_form.cleaned_data['person'] = current_person
-            Phone.objects.create(**phone_form.cleaned_data)
+            for name, form in phone_forms.items():
+                form.cleaned_data['person'] = current_person
+                Phone.objects.create(**form.cleaned_data)
 
             messages.success(request, f'Contact for {current_person} successfully created')
             return redirect('person-details', current_person.pk)
@@ -70,7 +79,6 @@ class CreateAddressView(CreateView):
     form_class = AddressForm
     success_url = reverse_lazy('create-address')
     template_name_suffix = '_create'
-
 
     def form_valid(self, form):
         data = form.cleaned_data
