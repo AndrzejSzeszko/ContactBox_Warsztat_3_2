@@ -44,12 +44,23 @@ class CreateContactView(View):
                 'number': number,
                 'phone_type': request.POST.getlist('phone_type')[index]
             })
+            
+        email_forms = {}
+        for index, email in enumerate(request.POST.getlist('email')):
+            email_forms[f'email_form_{index}'] = EmailForm({
+                'email': email,
+                'email_type': request.POST.getlist('email_type')[index]
+            })
 
-        if person_form.is_valid() and all([form.is_valid() for form in phone_forms.values()]):
+        phones_and_emails_forms = dict(**phone_forms, **email_forms)
+        if person_form.is_valid() and all([form.is_valid() for form in phones_and_emails_forms.values()]):
             current_person = person_form.save()
-            for name, form in phone_forms.items():
+            for name, form in phones_and_emails_forms.items():
                 form.cleaned_data['person'] = current_person
-                Phone.objects.create(**form.cleaned_data)
+                if 'phone' in name:
+                    Phone.objects.create(**form.cleaned_data)
+                elif 'email' in name:
+                    Email.objects.create(**form.cleaned_data)
 
             messages.success(request, f'Contact for {current_person} successfully created')
             return redirect('person-details', current_person.pk)
