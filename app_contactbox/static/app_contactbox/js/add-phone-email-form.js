@@ -1,11 +1,24 @@
 $(document).ready(function () {
+
     let phoneForm = $('.phone-form').clone(true);
     let addPhoneButton = $('#add-phone-button');
+
     let emailForm = $('.email-form').clone(true);
     let addEmailButton = $('#add-email-button');
 
+    let initialGroupForm = $('.group-form');
+    let groupForm = initialGroupForm.clone(true).removeAttr('hidden');
+    let addGroupButton = $('#add-group-button');
+
+    initialGroupForm.remove();
+
     $(document).on('click', '.remove-button', function () {
         $(this).parent().remove()
+    });
+
+    addGroupButton.on('click', function() {
+        let groupFormToAdd = groupForm.clone(true);
+        $(this).before(groupFormToAdd)
     });
 
     addPhoneButton.on('click', function () {
