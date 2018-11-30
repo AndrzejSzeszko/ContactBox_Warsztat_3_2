@@ -17,7 +17,15 @@
         {% csrf_token %}
         {{ person_form.as_p }}
 
-        Phones:
+        <div class="group-form" hidden>
+            {{ group_form.group_name.errors }}
+            {{ group_form.group_name.label_tag }} {{ group_form.group_name }}
+            <button class="remove-button" type="button">Remove group</button>
+            <p></p>
+        </div>
+        <button id="add-group-button" type="button">Add next group</button><br>
+
+        <p>Phones:</p>
         <div class="phone-form">
             <div class="fieldWrapper">
                 {{ phone_form.number.errors }}
@@ -28,10 +36,11 @@
                 {{ phone_form.phone_type.label_tag }} {{ phone_form.phone_type }}
             </div>
             <button class="remove-button" type="button">Remove phone</button>
+            <p></p>
         </div>
         <button id="add-phone-button" type="button">Add next phone</button><br>
 
-        Emails:
+        <p>Emails:</p>
         <div class="email-form">
             <div class="fieldWrapper">
                 {{ email_form.email.errors }}
@@ -42,10 +51,11 @@
                 {{ email_form.email_type.label_tag }} {{ email_form.email_type }}
             </div>
             <button class="remove-button" type="button">Remove email</button>
+            <p></p>
         </div>
         <button id="add-email-button" type="button">Add next email</button><br>
 
-        <button type="submit">Add contact</button>
+        <p><button type="submit">Add contact</button></p>
     </form>
 
 {% endblock content %}
