@@ -30,6 +30,8 @@ class CreateContactView(View):
     def get(self, request):
         ctx = {
             'person_form': PersonForm(),
+            'address_form': AddressForm(),
+            'group_form': GroupForm(),
             'phone_form': PhoneForm(),
             'email_form': EmailForm()
         }
@@ -37,6 +39,12 @@ class CreateContactView(View):
 
     def post(self, request):
         person_form = PersonForm(request.POST)
+        
+        group_forms = {}
+        for index, group_name in enumerate(request.POST.getlist('group_name')):
+            group_forms[f'group_form_{index}'] = GroupForm({
+                'group_name': group_name
+            })
 
         phone_forms = {}
         for index, number in enumerate(request.POST.getlist('number')):
@@ -52,37 +60,25 @@ class CreateContactView(View):
                 'email_type': request.POST.getlist('email_type')[index]
             })
 
-        phones_and_emails_forms = dict(**phone_forms, **email_forms)
-        if person_form.is_valid() and all([form.is_valid() for form in phones_and_emails_forms.values()]):
+        all_forms = dict(**phone_forms, **email_forms, **group_forms)
+        if person_form.is_valid() and all(form.is_valid() for form in all_forms.values()):
             current_person = person_form.save()
-            for name, form in phones_and_emails_forms.items():
-                form.cleaned_data['person'] = current_person
-                if 'phone' in name:
-                    Phone.objects.create(**form.cleaned_data)
-                elif 'email' in name:
-                    Email.objects.create(**form.cleaned_data)
+            for name, form in all_forms.items():
+                if 'group' in name:
+                    current_group = form.save()
+                    current_person.groups.add(current_group)
+                elif ('phone' or 'email') in name:
+                    form.cleaned_data['person'] = current_person
+                    if 'phone' in name:
+                        Phone.objects.create(**form.cleaned_data)
+                    elif 'email' in name:
+                        Email.objects.create(**form.cleaned_data)
 
             messages.success(request, f'Contact for {current_person} successfully created')
             return redirect('person-details', current_person.pk)
         else:
             messages.error(request, 'Person creation failed.')
             return redirect('create-contact')
-
-
-    # def get_success_url(self):
-    #     return reverse_lazy('person-details', kwargs={'pk': self.object.pk})
-    #
-    # def form_valid(self, form):
-    #     data = form.cleaned_data
-    #     name = data.get('name')
-    #     surname = data.get('surname')
-    #     messages.success(self.request, f'Person {name} {surname} successfully created.')
-    #
-    #     return super().form_valid(form)
-    #
-    # def form_invalid(self, form):
-    #     messages.error(self.request, f'Person creation failed.')
-    #     return super().form_invalid(form)
 
 
 class CreateAddressView(CreateView):
