@@ -10,11 +10,18 @@ $(document).ready(function () {
     let groupForm = initialGroupForm.clone(true).removeAttr('hidden');
     let addGroupButton = $('#add-group-button');
 
+    let addressFormRadio = $('#address-form-radio').attr('checked', true);
+    let addressForm = $('#address-form');
+    let addressListRadio = $('#address-list-radio');
+    let addressList = $('#address-list');
+
     initialGroupForm.remove();
 
     $(document).on('click', '.remove-button', function () {
         $(this).parent().remove()
     });
+
+
 
     addGroupButton.on('click', function() {
         let groupFormToAdd = groupForm.clone(true);

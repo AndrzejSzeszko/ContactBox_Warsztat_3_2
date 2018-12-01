@@ -15,11 +15,49 @@
     <form action="" method="post">
 
         {% csrf_token %}
-        {{ person_form.as_p }}
+
+        <div class="fieldWrapper">
+            {{ person_form.name.errors }}
+            {{ person_form.name.label_tag }} {{ person_form.name }}
+        </div>
+
+        <div class="fieldWrapper">
+            {{ person_form.surname.errors }}
+            {{ person_form.surname.label_tag }} {{ person_form.surname }}
+        </div>
+
+        <div class="fieldWrapper">
+            {{ person_form.description.errors }}
+            {{ person_form.description.label_tag }} {{ person_form.description }}
+        </div>
+        <p></p>
+
+        <p>Address:</p>
+        <input type="radio" name="address-radio" id="address-form-radio">
+            Define new address:
+            <div id="address-form">
+                {{ address_form.as_p }}
+            </div>
+            <p></p>
+
+        <input type="radio" name="address-radio" id="address-list-radio">
+            Select address from existing ones:
+            <div class="fieldWrapper" id="address-list">
+                {{ person_form.address.errors }}
+                {{ person_form.address.label_tag }} {{ person_form.address }}
+            </div>
+            <p></p>
+
+        <div class="fieldWrapper">
+            {{ person_form.groups.errors }}
+            {{ person_form.groups.label_tag }} {{ person_form.groups }}
+        </div>
 
         <div class="group-form" hidden>
-            {{ phone_form.group_name.errors }}
-            {{ group_form.group_name.label_tag }} {{ group_form.group_name }}
+            <div class="fieldWrapper">
+                {{ group_form.group_name.errors }}
+                {{ group_form.group_name.label_tag }} {{ group_form.group_name }}
+            </div>
             <button class="remove-button" type="button">Remove group</button>
             <p></p>
         </div>
