@@ -11,19 +11,32 @@ $(document).ready(function () {
     let addGroupButton = $('#add-group-button');
 
     let addressFormRadio = $('#address-form-radio').attr('checked', true);
-    let addressForm = $('#address-form');
+    let initialAddressForm = $('#address-form');
+    let addressForm = initialAddressForm.clone(true);
     let addressListRadio = $('#address-list-radio');
-    let addressList = $('#address-list');
+    let initialAddressList = $('#address-list');
+    let addressList = initialAddressList.clone(true);
 
     initialGroupForm.remove();
+    initialAddressList.remove();
 
     $(document).on('click', '.remove-button', function () {
         $(this).parent().remove()
     });
 
+    addressFormRadio.on('change', function () {
+        $('#address-list').remove();
+        let addressFormToAdd = addressForm.clone(true);
+        $(this).next().after(addressFormToAdd)
+    });
 
+    addressListRadio.on('change', function () {
+        $('#address-form').remove();
+        let addressListToAdd = addressList.clone(true);
+        $(this).next().after(addressListToAdd)
+    });
 
-    addGroupButton.on('click', function() {
+    addGroupButton.on('click', function () {
         let groupFormToAdd = groupForm.clone(true);
         $(this).before(groupFormToAdd)
     });
