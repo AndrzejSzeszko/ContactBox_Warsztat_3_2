@@ -34,17 +34,17 @@
 
         <p>Address:</p>
         <input type="radio" name="address-radio" id="address-form-radio">
-            Define new address:
+            <span>Define new address:</span>
             <div id="address-form">
                 {{ address_form.as_p }}
             </div>
             <p></p>
 
         <input type="radio" name="address-radio" id="address-list-radio">
-            Select address from existing ones:
+            <span>Select address from existing ones:</span>
             <div class="fieldWrapper" id="address-list">
                 {{ person_form.address.errors }}
-                {{ person_form.address.label_tag }} {{ person_form.address }}
+                {{ person_form.address }}
             </div>
             <p></p>
 

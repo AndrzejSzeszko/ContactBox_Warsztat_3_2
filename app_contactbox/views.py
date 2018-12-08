@@ -39,7 +39,7 @@ class CreateContactView(View):
 
     def post(self, request):
         person_form = PersonForm(request.POST)
-        
+
         group_forms = {}
         for index, group_name in enumerate(request.POST.getlist('group_name')):
             group_forms[f'group_form_{index}'] = GroupForm({
@@ -61,18 +61,26 @@ class CreateContactView(View):
             })
 
         all_forms = dict(**phone_forms, **email_forms, **group_forms)
+
+        if request.POST.get('town'):
+            all_forms['address_form'] = AddressForm(request.POST)
+
         if person_form.is_valid() and all(form.is_valid() for form in all_forms.values()):
             current_person = person_form.save()
             for name, form in all_forms.items():
-                if 'group' in name:
+                if 'address' in name:
+                    current_address = form.save()
+                    current_person.address = current_address
+                    current_person.save()
+                elif 'group' in name:
                     current_group = form.save()
                     current_person.groups.add(current_group)
-                elif ('phone' or 'email') in name:
+                elif 'email' in name or 'phone' in name:
                     form.cleaned_data['person'] = current_person
-                    if 'phone' in name:
-                        Phone.objects.create(**form.cleaned_data)
-                    elif 'email' in name:
+                    if 'email' in name:
                         Email.objects.create(**form.cleaned_data)
+                    elif 'phone' in name:
+                        Phone.objects.create(**form.cleaned_data)
 
             messages.success(request, f'Contact for {current_person} successfully created')
             return redirect('person-details', current_person.pk)
