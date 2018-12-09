@@ -16,22 +16,26 @@
 
         {% csrf_token %}
 
+        <!-- Person name field -->
         <div class="fieldWrapper">
             {{ person_form.name.errors }}
             {{ person_form.name.label_tag }} {{ person_form.name }}
         </div>
 
+        <!-- Person surname field -->
         <div class="fieldWrapper">
             {{ person_form.surname.errors }}
             {{ person_form.surname.label_tag }} {{ person_form.surname }}
         </div>
 
+        <!-- Person description field -->
         <div class="fieldWrapper">
             {{ person_form.description.errors }}
             {{ person_form.description.label_tag }} {{ person_form.description }}
         </div>
         <p></p>
 
+        <!-- Address form -->
         <p>Address:</p>
         <input type="radio" name="address-radio" id="address-form-radio">
             <span>Define new address:</span>
@@ -40,19 +44,22 @@
             </div>
             <p></p>
 
+        <!-- Addresses' list field -->
         <input type="radio" name="address-radio" id="address-list-radio">
-            <span>Select address from existing ones:</span>
+            <span>Leave blank or select address from existing ones:</span>
             <div class="fieldWrapper" id="address-list">
                 {{ person_form.address.errors }}
                 {{ person_form.address }}
             </div>
             <p></p>
 
+        <!-- Groups' list field -->
         <div class="fieldWrapper">
             {{ person_form.groups.errors }}
             {{ person_form.groups.label_tag }} {{ person_form.groups }}
         </div>
 
+        <!-- Group name field -->
         <div class="group-form" hidden>
             <div class="fieldWrapper">
                 {{ group_form.group_name.errors }}
@@ -63,6 +70,7 @@
         </div>
         <button id="add-group-button" type="button">Add next group</button><br>
 
+        <!-- Phone form -->
         <p>Phones:</p>
         <div class="phone-form">
             <div class="fieldWrapper">
@@ -78,6 +86,7 @@
         </div>
         <button id="add-phone-button" type="button">Add next phone</button><br>
 
+        <!-- Email form -->
         <p>Emails:</p>
         <div class="email-form">
             <div class="fieldWrapper">
