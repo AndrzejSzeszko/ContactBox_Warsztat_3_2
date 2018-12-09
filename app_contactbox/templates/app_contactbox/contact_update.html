@@ -1,0 +1,107 @@
+{% extends 'app_contactbox/base.html' %}
+
+{% block content %}
+
+<h2>Update contact {{ current_person }}:</h2>
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+
+        <!-- Person name field -->
+        <div class="fieldWrapper">
+            {{ person_form.name.errors }}
+            {{ person_form.name.label_tag }} {{ person_form.name }}
+        </div>
+
+        <!-- Person surname field -->
+        <div class="fieldWrapper">
+            {{ person_form.surname.errors }}
+            {{ person_form.surname.label_tag }} {{ person_form.surname }}
+        </div>
+
+        <!-- Person description field -->
+        <div class="fieldWrapper">
+            {{ person_form.description.errors }}
+            {{ person_form.description.label_tag }} {{ person_form.description }}
+        </div>
+        <p></p>
+
+        <!-- Address form -->
+        <p>Address:</p>
+        <input type="radio" name="address-radio" id="address-form-radio">
+            <span>Define new address:</span>
+            <div id="address-form">
+                {{ address_form.as_p }}
+            </div>
+            <p></p>
+
+        <!-- Addresses' list field -->
+        <input type="radio" name="address-radio" id="address-list-radio">
+            <span>Leave blank or select address from existing ones:</span>
+            <div class="fieldWrapper" id="address-list">
+                {{ person_form.address.errors }}
+                {{ person_form.address }}
+            </div>
+            <p></p>
+
+        <!-- Groups' list field -->
+        <div class="fieldWrapper">
+            {{ person_form.groups.errors }}
+            {{ person_form.groups.label_tag }} {{ person_form.groups }}
+        </div>
+
+        <!-- Group name field -->
+        <div class="group-form" hidden>
+            <div class="fieldWrapper">
+                {{ group_form.group_name.errors }}
+                {{ group_form.group_name.label_tag }} {{ group_form.group_name }}
+            </div>
+            <button class="remove-button" type="button">Remove group</button>
+            <p></p>
+        </div>
+        <button id="add-group-button" type="button">Add next group</button><br>
+
+        <!-- Phone forms -->
+        <p>Phones:</p>
+        {% for phone_form in phone_forms %}
+            <div class="phone-form">
+                <div class="fieldWrapper">
+                    {{ phone_form.number.errors }}
+                    {{ phone_form.number.label_tag }} {{ phone_form.number }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ phone_form.phone_type.errors }}
+                    {{ phone_form.phone_type.label_tag }} {{ phone_form.phone_type }}
+                </div>
+                <button class="remove-button" type="button">Remove phone</button>
+                <p></p>
+            </div>
+        {% endfor %}
+        <button id="add-phone-button" type="button">Add next phone</button><br>
+
+        <!-- Email forms -->
+        <p>Emails:</p>
+        {% for email_form in email_forms %}
+            <div class="email-form">
+                <div class="fieldWrapper">
+                    {{ email_form.email.errors }}
+                    {{ email_form.email.label_tag }} {{ email_form.email }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ email_form.email_type.errors }}
+                    {{ email_form.email_type.label_tag }} {{ email_form.email_type }}
+                </div>
+                <button class="remove-button" type="button">Remove email</button>
+                <p></p>
+            </div>
+        {% endfor %}
+        <button id="add-email-button" type="button">Add next email</button><br>
+
+        <p>
+            <button type="submit">Save changes</button>
+            <button type="button"><a href="{% url 'person-details' current_person.id %}">Discard changes</a></button>
+        </p>
+    </form>
+
+{% endblock content %}
