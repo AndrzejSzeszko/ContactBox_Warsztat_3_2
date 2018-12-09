@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
-    let phoneForm = $('.phone-form').clone(true);
+    let phoneForm = $('.phone-form').first().clone(true);
     let addPhoneButton = $('#add-phone-button');
 
-    let emailForm = $('.email-form').clone(true);
+    let emailForm = $('.email-form').first().clone(true);
     let addEmailButton = $('#add-email-button');
 
-    let initialGroupForm = $('.group-form');
+    let initialGroupForm = $('.group-form').first();
     let groupForm = initialGroupForm.clone(true).removeAttr('hidden');
     let addGroupButton = $('#add-group-button');
 
