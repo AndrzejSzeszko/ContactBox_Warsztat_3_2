@@ -10,6 +10,6 @@ urlpatterns = [
     path('create_phone/', views.CreatePhoneView.as_view(), name='create-phone'),
     path('create_email/', views.CreateEmailView.as_view(), name='create-email'),
     path('person_details/<int:pk>', views.PersonDetailsView.as_view(), name='person-details'),
-    path('update_person/<int:pk>', views.EditPersonView.as_view(), name='update-person'),
+    path('update_contact/<int:pk>', views.EditContactView.as_view(), name='update-contact'),
     path('delete_person/<int:pk>', views.DeletePersonView.as_view(), name='delete-person'),
 ]
